@@ -1,0 +1,114 @@
+name: Update Language Stats
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  update-stats:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Generate Language Stats SVG
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cat > generate.py << 'EOF'
+          import os
+          import requests
+          import json
+
+          USERNAME = "${{ github.repository_owner }}"
+          TOKEN = os.environ["GITHUB_TOKEN"]
+
+          query = """
+          query {
+            user(login: "%s") {
+              repositories(ownerAffiliations: OWNER, isFork: false, first: 100) {
+                nodes {
+                  languages(first: 10, orderBy: {field: SIZE, direction: DESC}) {
+                    edges {
+                      size
+                      node {
+                        color
+                        name
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          """ % USERNAME
+
+          response = requests.post(
+              'https://api.github.com/graphql',
+              json={'query': query},
+              headers={'Authorization': f'Bearer {TOKEN}'}
+          )
+
+          data = response.json()
+          repos = data['data']['user']['repositories']['nodes']
+
+          langs = {}
+          for repo in repos:
+              for edge in repo['languages']['edges']:
+                  name = edge['node']['name']
+                  size = edge['size']
+                  color = edge['node']['color']
+                  if name in langs:
+                      langs[name]['size'] += size
+                  else:
+                      langs[name] = {'size': size, 'color': color}
+
+          total = sum(l['size'] for l in langs.values())
+          lang_list = [
+              {'name': name, 'percent': (data['size']/total)*100, 'color': data['color']}
+              for name, data in langs.items()
+          ]
+          lang_list.sort(key=lambda x: x['percent'], reverse=True)
+          lang_list = lang_list[:8]
+
+          svg = '''<svg width="300" height="200" xmlns="http://www.w3.org/2000/svg">
+            <rect width="100%" height="100%" fill="white" rx="6"/>
+            <g>'''
+
+          x = 12
+          for lang in lang_list:
+              w = (lang['percent'] / 100) * 276
+              svg += f'<rect x="{x}" y="12" width="{w}" height="8" fill="{lang["color"]}" rx="2"/>'
+              x += w
+
+          svg += '</g><g>'
+
+          y = 35
+          for lang in lang_list:
+              svg += f'''
+                <circle cx="18" cy="{y}" r="5" fill="{lang['color']}"/>
+                <text x="32" y="{y+4}" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="12" fill="#24292f">{lang['name']}</text>
+                <text x="250" y="{y+4}" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="12" fill="#24292f" text-anchor="end">{lang['percent']:.1f}%</text>
+              '''
+              y += 20
+
+          svg += '</g></svg>'
+
+          with open('language-stats.svg', 'w') as f:
+              f.write(svg)
+
+          print("✅ SVG generated!")
+          EOF
+
+          python3 generate.py
+
+      - name: Commit changes
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add language-stats.svg
+          git diff --quiet && git diff --staged --quiet || \
+            (git commit -m "Update language stats [skip ci]" && git push)
+
