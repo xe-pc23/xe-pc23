@@ -14,6 +14,6 @@ my personal website:
 
 ---
 
-## 📊 GitHub Stats
+## 💻 Language Stats
 
-<img src="http://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=xe-pc23&theme=tokyonight" alt="Profile Details" width="100%" />
+![Language Stats](./language-stats.svg)
