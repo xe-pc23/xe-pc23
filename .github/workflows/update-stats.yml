@@ -73,24 +73,28 @@ jobs:
           lang_list.sort(key=lambda x: x['percent'], reverse=True)
           lang_list = lang_list[:8]
 
-          svg = '''<svg width="300" height="200" xmlns="http://www.w3.org/2000/svg">
-            <rect width="100%" height="100%" fill="white" rx="6"/>
+          # SVGの高さを計算（言語数に応じて）
+          svg_height = 8 + 12 + (len(lang_list) * 20)
+          
+          svg = f'''<svg width="300" height="{svg_height}" xmlns="http://www.w3.org/2000/svg">
             <g>'''
 
-          x = 12
+          # プログレスバー
+          x = 0
           for lang in lang_list:
-              w = (lang['percent'] / 100) * 276
-              svg += f'<rect x="{x}" y="12" width="{w}" height="8" fill="{lang["color"]}" rx="2"/>'
+              w = (lang['percent'] / 100) * 300
+              svg += f'<rect x="{x}" y="0" width="{w}" height="8" fill="{lang["color"]}" rx="2"/>'
               x += w
 
           svg += '</g><g>'
 
-          y = 35
+          # 言語リスト
+          y = 24
           for lang in lang_list:
               svg += f'''
-                <circle cx="18" cy="{y}" r="5" fill="{lang['color']}"/>
-                <text x="32" y="{y+4}" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="12" fill="#24292f">{lang['name']}</text>
-                <text x="250" y="{y+4}" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="12" fill="#24292f" text-anchor="end">{lang['percent']:.1f}%</text>
+                <circle cx="6" cy="{y}" r="5" fill="{lang['color']}"/>
+                <text x="18" y="{y+4}" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="12" fill="#586069">{lang['name']}</text>
+                <text x="294" y="{y+4}" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="12" fill="#586069" text-anchor="end">{lang['percent']:.1f}%</text>
               '''
               y += 20
 
