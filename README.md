@@ -7,18 +7,10 @@
 
 ---
 
-## 🛠 Skills
-
-<a href="https://skillicons.dev">
-  <img src="https://skillicons.dev/icons?i=go,py,docker,html,css,js&perline=6" height="40" />
-</a>
-
----
-
 ## 🌐 My Website
 
 my personal website:  
-[https://xehack.me](https://xenosaba.com)
+[https://xenosaba.com](https://xenosaba.com)
 
 ---
 
