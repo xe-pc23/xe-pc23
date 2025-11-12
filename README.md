@@ -17,8 +17,8 @@
 
 ## 🌐 My Website
 
-Check out my personal website:  
-[https://xehack.me](https://xehack.me)
+my personal website:  
+[https://xehack.me](https://xenosaba.com)
 
 ---
 
