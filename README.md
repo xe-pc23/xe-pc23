@@ -16,11 +16,4 @@ my personal website:
 
 ## 📊 GitHub Stats
 
-<div>
-  <img src="http://github-profile-summary-cards.vercel.app/api/cards/stats?username=xe-pc23&theme=tokyonight" width="49%" />
-  <img src="http://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=xe-pc23&theme=tokyonight&utcOffset=9" width="49%" />
-  <img src="http://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=xe-pc23&theme=tokyonight" width="49%" />
-  <img src="http://github-profile-summary-cards.vercel.app/api/cards/most-commit-language?username=xe-pc23&theme=tokyonight" width="49%" />
-</div>
-
 <img src="http://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=xe-pc23&theme=tokyonight" alt="Profile Details" width="100%" />
