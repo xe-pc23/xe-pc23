@@ -1,4 +1,4 @@
-<h1>Hi there! I'm xe-pc23 👋</h1>
+<h1>Hi there! I'm xe-pc23 (he/him)👋</h1>
 
 ##  About Me
 
