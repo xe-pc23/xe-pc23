@@ -9,7 +9,7 @@
 
 ## 🌐 My Website
 
-my personal website:  
+xe-portfolio:  
 [https://xenosaba.com](https://xenosaba.com)
 
 ---
